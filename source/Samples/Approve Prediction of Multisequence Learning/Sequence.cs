@@ -11,6 +11,7 @@ public class SequenceData
         sequences.Add("S2", new List<string>(new string[] { 8.0, 1.0, 2.0, 9.0, 10.0, 7.0, 11.00 }));
         sequences.Add("S3", new List<string>(new string[] { 12.0, 13.0, 14.0, 15.0, 16.0, 6.0, 9.00 }));
         sequences.Add("S4", new List<string>(new string[] { 3.0, 6.0, 9.0, 12.0, 15.0, 18.0, 21.00 }));
+        sequences.Add("S5", new List<string>(new string[] { 3.0, 6.0, 9.0, 12.0, 15.0, 18.0, 21.00, 22.00, 23.00 }));
 
         //
         // Prototype for building the prediction engine.
