@@ -1,8 +1,8 @@
 ﻿using System;
 
-public class SequenceData
+public class Sequence
 {
-	public SequenceData()
+	public Sequence()
 	{
         Dictionary<string, List<string>> sequences = new Dictionary<string, List<string>>();
 

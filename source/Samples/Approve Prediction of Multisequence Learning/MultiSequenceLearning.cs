@@ -1,4 +1,10 @@
-﻿using NeoCortexApi;
+﻿using System.Globalization;
+using System.IO;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using NeoCortexApi;
 using NeoCortexApi.Classifiers;
 using NeoCortexApi.Encoders;
 using NeoCortexApi.Entities;
@@ -8,14 +14,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
-
-using NeoCortexApi;
-using NeoCortexApi.Classifiers;
-using NeoCortexApi.Encoders;
-using NeoCortexApi.Entities;
-using NeoCortexApi.Classifiers;
-using NeoCortexApi.Network;
 
 
 namespace NeoCortexApiSample
@@ -38,7 +36,7 @@ namespace NeoCortexApiSample
             HtmConfig cfg = HelperMethods.FetchHTMConfig(inputBits, numColumns);
             EncoderBase encoder = HelperMethods.GetEncoder(inputBits);
             return RunExperiment(inputBits, cfg, encoder, sequences);
-
+        }
 
             /* Console.WriteLine($"Hello NeocortexApi! Experiment {nameof(MultiSequenceLearning)}");
 
@@ -88,13 +86,13 @@ namespace NeoCortexApiSample
 
              EncoderBase encoder = new ScalarEncoder(settings);
 
-             return RunExperiment(inputBits, cfg, encoder, sequences); */
-        }
+             return RunExperiment(inputBits, cfg, encoder, sequences); 
+        }*/
 
-        /// <summary>
-        ///
-        /// </summary>
-        private Predictor RunExperiment(int inputBits, HtmConfig cfg, EncoderBase encoder, Dictionary<string, List<double>> sequences)
+            /// <summary>
+            ///
+            /// </summary>
+            private Predictor RunExperiment(int inputBits, HtmConfig cfg, EncoderBase encoder, Dictionary<string, List<double>> sequences)
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
