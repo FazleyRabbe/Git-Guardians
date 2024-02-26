@@ -10,6 +10,12 @@ namespace NeoCortexApiSample
 {
     class Program
     {
+        private const string DatasetFolder = "dataset";
+        private const string ReportFolder = "report";
+        private const string DatasetFileName = "dataset_01.json";
+        private const string TestsetFileName = "test_01.json";
+
+
         /// <summary>
         /// This sample shows a typical experiment code for SP and TM.
         /// You must start this code in debugger to follow the trace.
@@ -18,6 +24,17 @@ namespace NeoCortexApiSample
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+
+
+            //Reading Input Dataset
+            string basePath = AppDomain.CurrentDomain.BaseDirectory;
+            List<Sequence> sequences = ReadDataset(Path.Combine(basePath, DatasetFolder, DatasetFileName));
+            //Reading Test  dataset
+            List<Sequence> sequencesTest = ReadDataset(Path.Combine(basePath, DatasetFolder, TestsetFileName));
+            List<Report> reports = RunMultiSequenceLearningExperiment(sequences, sequencesTest);
+            WriteReport(reports, basePath); 
+
+
             //
             // Starts experiment that demonstrates how to learn spatial patterns.
             //SpatialPatternLearning experiment = new SpatialPatternLearning();
