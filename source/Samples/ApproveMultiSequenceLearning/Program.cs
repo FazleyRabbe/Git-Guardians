@@ -80,6 +80,7 @@ namespace MultiSequenceLearning
        //Predict Next Element 
        //Aquracy 
        // Report 2 making 
+       // Update all if make changes 
         
     }
 
