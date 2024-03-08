@@ -1,45 +1,45 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\NeoCortexApi\NeoCortexApi.csproj" />
-    <ProjectReference Include="..\..\NeoCortexEntities\NeoCortexEntities.csproj" />
-    <ProjectReference Include="..\..\NeoCortexUtils\NeoCortexUtils.csproj" />
-   
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\NeoCortexApi\NeoCortexApi.csproj" />
+		<ProjectReference Include="..\..\NeoCortexEntities\NeoCortexEntities.csproj" />
+		<ProjectReference Include="..\..\NeoCortexUtils\NeoCortexUtils.csproj" />
 
-  <ItemGroup>
-    <Reference Include="NeoCortexApi">
-      <HintPath>..\..\NeoCortexApi\bin\Debug\netstandard2.1\NeoCortexApi.dll</HintPath>
-    </Reference>
-    <Reference Include="NeoCortexArrayLib">
-      <HintPath>..\..\NeoCortexApi\bin\Debug\netstandard2.1\NeoCortexArrayLib.dll</HintPath>
-    </Reference>
-    <Reference Include="NeoCortexEntities">
-      <HintPath>..\..\NeoCortexApi\bin\Debug\netstandard2.1\NeoCortexEntities.dll</HintPath>
-    </Reference>
-    <Reference Include="NeoCortexUtils">
-      <HintPath>..\..\NeoCortexUtils\bin\Debug\net5.0\NeoCortexUtils.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="dataset\dataset_01.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="dataset\test_01.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Include="NeoCortexApi">
+			<HintPath>..\..\NeoCortexApi\bin\Debug\netstandard2.1\NeoCortexApi.dll</HintPath>
+		</Reference>
+		<Reference Include="NeoCortexArrayLib">
+			<HintPath>..\..\NeoCortexApi\bin\Debug\netstandard2.1\NeoCortexArrayLib.dll</HintPath>
+		</Reference>
+		<Reference Include="NeoCortexEntities">
+			<HintPath>..\..\NeoCortexApi\bin\Debug\netstandard2.1\NeoCortexEntities.dll</HintPath>
+		</Reference>
+		<Reference Include="NeoCortexUtils">
+			<HintPath>..\..\NeoCortexUtils\bin\Debug\net5.0\NeoCortexUtils.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="dataset\dataset_01.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="dataset\test_01.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
 </Project>

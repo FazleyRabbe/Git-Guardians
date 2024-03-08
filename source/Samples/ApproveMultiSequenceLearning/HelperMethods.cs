@@ -94,10 +94,47 @@ namespace MultiSequenceLearning
             }
         }
 
-        
+        /// <summary>
+        /// Saves dataset to the file
+        /// </summary>
+        public static string SaveDataset(List<Sequence> sequences)
+        {
+            string basePath = AppDomain.CurrentDomain.BaseDirectory;
+            string datasetFolder = Path.Combine(basePath, "dataset");
+            Directory.CreateDirectory(datasetFolder); // CreateDirectory is safe to call if directory exists
+            string datasetPath = Path.Combine(datasetFolder, $"dataset_{DateTime.Now.Ticks}.json");
 
-        
+            Console.WriteLine("Saving dataset...");
+            File.WriteAllText(datasetPath, JsonConvert.SerializeObject(sequences));
+            return datasetPath;
+        }
 
-        
+        /// <summary>
+        /// Writes report to the file
+        /// </summary>
+        public static List<Sequence> CreateSequences(int count, int size, int startVal, int stopVal)
+        {
+            return Enumerable.Range(1, count).Select(i =>
+                new Sequence
+                {
+                    name = $"S{i}",
+                    data = GenerateRandomSequence(size, startVal, stopVal)
+                })
+                .ToList();
+        }
+
+        private static int[] GenerateRandomSequence(int size, int startVal, int stopVal)
+        {
+            var rnd = new Random();
+            var sequence = new HashSet<int>();
+
+            while (sequence.Count < size)
+            {
+                int number = rnd.Next(startVal, stopVal + 1);
+                sequence.Add(number);
+            }
+
+            return sequence.OrderBy(n => n).ToArray();
+        }
     }
 }

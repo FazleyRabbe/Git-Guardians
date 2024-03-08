@@ -22,7 +22,7 @@ namespace MultiSequenceLearning
     {
         public Predictor Run(List<Sequence> sequences)
         {
-            Console.WriteLine($"Hello NeocortexApi! Experiment by Git_Gurdians {nameof(MultiSequenceLearning)}");
+            Console.WriteLine($"Hello NeocortexApi! Experiment {nameof(MultiSequenceLearning)}");
             int inputBits = 100;
             int numColumns = 1024;
             HtmConfig cfg = HelperMethods.FetchHTMConfig(inputBits, numColumns);
@@ -46,10 +46,10 @@ namespace MultiSequenceLearning
             HomeostaticPlasticityController hpc = new HomeostaticPlasticityController(mem, numUniqueInputs * 150, (isStable, numPatterns, actColAvg, seenInputs) =>
             {
                 if (isStable)
-                    
+
                     Debug.WriteLine($"STABLE: Patterns: {numPatterns}, Inputs: {seenInputs}, iteration: {seenInputs / numPatterns}");
                 else
-                    
+
                     Debug.WriteLine($"INSTABLE: Patterns: {numPatterns}, Inputs: {seenInputs}, iteration: {seenInputs / numPatterns}");
 
                 isInStableState = isStable;
@@ -72,9 +72,9 @@ namespace MultiSequenceLearning
 
             int maxCycles = 3500;
 
- 
+
             //  New-born stage. In this stage, the SP is trained on the input patterns.
-            
+
 
             for (int i = 0; i < maxCycles && isInStableState == false; i++)
             {
@@ -110,7 +110,123 @@ namespace MultiSequenceLearning
 
             //
             // Loop over all sequences.
-           //Main loop
+            foreach (var sequenceKeyPair in sequences)
+            {
+                Debug.WriteLine($"-------------- Sequences {sequenceKeyPair.name} ---------------");
+                Console.WriteLine($"-------------- Sequences {sequenceKeyPair.name} ---------------");
+
+                int maxPrevInputs = sequenceKeyPair.data.Length - 1;
+
+                List<string> previousInputs = new List<string>();
+
+                previousInputs.Add("-1");
+
+                //  The SP+TM learning stage. In this stage, the SP is trained on the input patterns and the TM is trained on the SP output.
+                for (int i = 0; i < maxCycles; i++)
+                {
+                    matches = 0;
+
+                    cycle++;
+
+                    Debug.WriteLine("");
+
+                    Debug.WriteLine($"-------------- Cycle SP+TM{cycle} ---------------");
+                    Console.WriteLine($"-------------- Cycle SP+TM {cycle} ---------------");
+
+                    foreach (var input in sequenceKeyPair.data)
+                    {
+                        Debug.WriteLine($"-------------- {input} ---------------");
+
+                        var lyrOut = layer1.Compute(input, true) as ComputeCycle;
+
+                        var activeColumns = layer1.GetResult("sp") as int[];
+
+                        previousInputs.Add(input.ToString());
+                        if (previousInputs.Count > (maxPrevInputs + 1))
+                            previousInputs.RemoveAt(0);
+
+                        // We need to have enough previous inputs to make a prediction.
+
+                        if (previousInputs.Count < maxPrevInputs)
+                            continue;
+
+                        string key = GetKey(previousInputs, input, sequenceKeyPair.name);
+
+                        List<Cell> actCells;
+
+                        if (lyrOut.ActiveCells.Count == lyrOut.WinnerCells.Count)
+                        {
+                            actCells = lyrOut.ActiveCells;
+                        }
+                        else
+                        {
+                            actCells = lyrOut.WinnerCells;
+                        }
+
+                        cls.Learn(key, actCells.ToArray());
+
+                        Debug.WriteLine($"Col  SDR: {Helpers.StringifyVector(lyrOut.ActivColumnIndicies)}");
+                        Debug.WriteLine($"Cell SDR: {Helpers.StringifyVector(actCells.Select(c => c.Index).ToArray())}");
+
+                        // We need to have enough previous inputs to make a prediction.
+                        if (lastPredictedValues.Contains(key))
+                        {
+                            matches++;
+                            Debug.WriteLine($"Match. Actual value: {key} - Predicted value: {lastPredictedValues.FirstOrDefault(key)}.");
+                        }
+                        else
+                            Debug.WriteLine($"Missmatch! Actual value: {key} - Predicted values: {String.Join(',', lastPredictedValues)}");
+
+                        if (lyrOut.PredictiveCells.Count > 0)
+                        {
+                            // Get the predicted input values.
+                            var predictedInputValues = cls.GetPredictedInputValues(lyrOut.PredictiveCells.ToArray(), 3);
+
+                            foreach (var item in predictedInputValues)
+                            {
+                                Debug.WriteLine($"Current Input: {input} \t| Predicted Input: {item.PredictedInput} - {item.Similarity}");
+                            }
+
+                            lastPredictedValues = predictedInputValues.Select(v => v.PredictedInput).ToList();
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"NO CELLS PREDICTED for next cycle.");
+                            lastPredictedValues = new List<string>();
+                        }
+                    }
+
+                    // This resets the learned state, so the first element starts allways from the beginning.
+                    double maxPossibleAccuraccy = (double)((double)sequenceKeyPair.data.Length - 1) / (double)sequenceKeyPair.data.Length * 100.0;
+
+                    double accuracy = (double)matches / (double)sequenceKeyPair.data.Length * 100.0;
+
+                    Debug.WriteLine($"Cycle: {cycle}\tMatches={matches} of {sequenceKeyPair.data.Length}\t {accuracy}%");
+                    Console.WriteLine($"Cycle: {cycle}\tMatches={matches} of {sequenceKeyPair.data.Length}\t {accuracy}%");
+
+                    if (accuracy >= maxPossibleAccuraccy)
+                    {
+                        maxMatchCnt++;
+                        Debug.WriteLine($"100% accuracy reched {maxMatchCnt} times.");
+
+                        // If we have 30 repeats with 100% accuracy, we can assume that the algorithm is in the stable state.
+                        if (maxMatchCnt >= 30)
+                        {
+                            sw.Stop();
+                            Debug.WriteLine($"Sequence learned. The algorithm is in the stable state after 30 repeats with with accuracy {accuracy} of maximum possible {maxMatchCnt}. Elapsed sequence {sequenceKeyPair.name} learning time: {sw.Elapsed}.");
+                            break;
+                        }
+                    }
+                    else if (maxMatchCnt > 0)
+                    {
+                        Debug.WriteLine($"At 100% accuracy after {maxMatchCnt} repeats we get a drop of accuracy with accuracy {accuracy}. This indicates instable state. Learning will be continued.");
+                        maxMatchCnt = 0;
+                    }
+
+                    // If the algorithm is not in the stable state, we need to reset the SP and TM.
+                    tm.Reset(mem);
+                }
+            }
 
             Debug.WriteLine("------------ END ------------");
 
