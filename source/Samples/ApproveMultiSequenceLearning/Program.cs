@@ -41,7 +41,19 @@ namespace MultiSequenceLearning
             }
         }
 
-        
+        private static void WriteReport(List<Report> reports, string basePath)
+        {
+            string reportFolder = EnsureDirectory(Path.Combine(basePath, ReportFolder));
+            string reportPath = Path.Combine(reportFolder, $"report_{DateTime.Now.Ticks}.txt");
+
+            using (StreamWriter sw = File.CreateText(reportPath))
+            {
+                foreach (Report report in reports)
+                {
+                    WriteReportContent(sw, report);
+                }
+            }
+        }
 
         private static string EnsureDirectory(string path)
         {
