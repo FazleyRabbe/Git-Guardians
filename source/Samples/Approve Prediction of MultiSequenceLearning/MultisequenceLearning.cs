@@ -22,7 +22,7 @@ namespace MultiSequenceLearning
     {
         public Predictor Run(List<Sequence> sequences)
         {
-            Console.WriteLine($"Hello NeocortexApi! Experiment {nameof(MultiSequenceLearning)}");
+            Console.WriteLine($"Hello NeocortexApi! Experiment by Git Gurdians {nameof(MultiSequenceLearning)}");
             int inputBits = 100;
             int numColumns = 1024;
             HtmConfig cfg = HelperMethods.FetchHTMConfig(inputBits, numColumns);
