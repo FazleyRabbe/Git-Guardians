@@ -41,7 +41,7 @@ namespace MultiSequenceLearning
             CortexLayer<object, object> layer1 = new CortexLayer<object, object>("L1");
             TemporalMemory tm = new TemporalMemory();
 
-            Console.WriteLine("------------ START ------------");
+            Console.WriteLine("************** START **************");
 
             HomeostaticPlasticityController hpc = new HomeostaticPlasticityController(mem, numUniqueInputs * 150, (isStable, numPatterns, actColAvg, seenInputs) =>
             {
@@ -82,8 +82,8 @@ namespace MultiSequenceLearning
 
                 cycle++;
 
-                Debug.WriteLine($"-------------- Newborn SP Cycle {cycle} ---------------");
-                Console.WriteLine($"-------------- Newborn SP Cycle {cycle} ---------------");
+                Debug.WriteLine($"************** Newborn SP Cycle {cycle} **************");
+                Console.WriteLine($"************** Newborn SP Cycle {cycle} **************");
 
                 foreach (var inputs in sequences)
                 {
@@ -112,8 +112,8 @@ namespace MultiSequenceLearning
             // Loop over all sequences.
             foreach (var sequenceKeyPair in sequences)
             {
-                Debug.WriteLine($"-------------- Sequences {sequenceKeyPair.name} ---------------");
-                Console.WriteLine($"-------------- Sequences {sequenceKeyPair.name} ---------------");
+                Debug.WriteLine($"************** Sequences {sequenceKeyPair.name} **************");
+                Console.WriteLine($"************** Sequences {sequenceKeyPair.name} **************");
 
                 int maxPrevInputs = sequenceKeyPair.data.Length - 1;
 
@@ -121,7 +121,7 @@ namespace MultiSequenceLearning
 
                 previousInputs.Add("-1");
 
-                //  The SP+TM learning stage. In this stage, the SP is trained on the input patterns and the TM is trained on the SP output.
+                //  The learning stage. In this stage, the SP is trained on the input patterns and the TM is trained on the SP output.
                 for (int i = 0; i < maxCycles; i++)
                 {
                     matches = 0;
@@ -130,12 +130,12 @@ namespace MultiSequenceLearning
 
                     Debug.WriteLine("");
 
-                    Debug.WriteLine($"-------------- Cycle SP+TM{cycle} ---------------");
-                    Console.WriteLine($"-------------- Cycle SP+TM {cycle} ---------------");
+                    Debug.WriteLine($"************** Cycle SP+TM{cycle} **************");
+                    Console.WriteLine($"************** Cycle SP+TM {cycle} **************");
 
                     foreach (var input in sequenceKeyPair.data)
                     {
-                        Debug.WriteLine($"-------------- {input} ---------------");
+                        Debug.WriteLine($"************** {input} **************");
 
                         var lyrOut = layer1.Compute(input, true) as ComputeCycle;
 
@@ -145,7 +145,7 @@ namespace MultiSequenceLearning
                         if (previousInputs.Count > (maxPrevInputs + 1))
                             previousInputs.RemoveAt(0);
 
-                        // We need to have enough previous inputs to make a prediction.
+                       
 
                         if (previousInputs.Count < maxPrevInputs)
                             continue;
@@ -168,7 +168,7 @@ namespace MultiSequenceLearning
                         Debug.WriteLine($"Col  SDR: {Helpers.StringifyVector(lyrOut.ActivColumnIndicies)}");
                         Debug.WriteLine($"Cell SDR: {Helpers.StringifyVector(actCells.Select(c => c.Index).ToArray())}");
 
-                        // We need to have enough previous inputs to make a prediction.
+                        
                         if (lastPredictedValues.Contains(key))
                         {
                             matches++;
@@ -191,7 +191,7 @@ namespace MultiSequenceLearning
                         }
                         else
                         {
-                            Debug.WriteLine($"NO CELLS PREDICTED for next cycle.");
+                            Debug.WriteLine($"Nothing PREDICTED for next cycle.");
                             lastPredictedValues = new List<string>();
                         }
                     }
@@ -209,11 +209,11 @@ namespace MultiSequenceLearning
                         maxMatchCnt++;
                         Debug.WriteLine($"100% accuracy reched {maxMatchCnt} times.");
 
-                        // If we have 30 repeats with 100% accuracy, we can assume that the algorithm is in the stable state.
-                        if (maxMatchCnt >= 30)
+                        // If we have 20 repeats with 100% accuracy, we can assume that the algorithm is in the stable state.
+                        if (maxMatchCnt >= 20)
                         {
                             sw.Stop();
-                            Debug.WriteLine($"Sequence learned. The algorithm is in the stable state after 30 repeats with with accuracy {accuracy} of maximum possible {maxMatchCnt}. Elapsed sequence {sequenceKeyPair.name} learning time: {sw.Elapsed}.");
+                            Debug.WriteLine($"Sequence learned. The algorithm is in the stable state after 20 repeats with with accuracy {accuracy} of maximum possible {maxMatchCnt}. Elapsed sequence {sequenceKeyPair.name} learning time: {sw.Elapsed}.");
                             break;
                         }
                     }
@@ -228,7 +228,7 @@ namespace MultiSequenceLearning
                 }
             }
 
-            Debug.WriteLine("------------ END ------------");
+            Debug.WriteLine("************** END **************");
 
             return new Predictor(layer1, mem, cls);
         }

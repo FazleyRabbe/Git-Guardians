@@ -13,9 +13,9 @@ namespace MultiSequenceLearning
     {
         private const string DatasetFolder = "dataset";
         private const string ReportFolder = "report";
-        private const string DatasetFileName = "dataset_01.json";
+        //private const string DatasetFileName = "dataset_01.json";
         //private const string DatasetFileName = "dataset_02.json";
-        //private const string DatasetFileName = "dataset_03.json";
+        private const string DatasetFileName = "dataset_03.json";
         private const string TestsetFileName = "test_01.json";
 
         static void Main(string[] args)
@@ -66,14 +66,14 @@ namespace MultiSequenceLearning
 
         private static void WriteReportContent(StreamWriter sw, Report report)
         {
-            sw.WriteLine("------------------------------");
+            sw.WriteLine("**************");
             sw.WriteLine($"Using test sequence: {report.SequenceName} -> {string.Join("-", report.SequenceData)}");
             foreach (string log in report.PredictionLog)
             {
                 sw.WriteLine($"\t{log}");
             }
             sw.WriteLine($"\tAccuracy: {report.Accuracy}%");
-            sw.WriteLine("------------------------------");
+            sw.WriteLine("**************");
         }
 
         private static List<Report> RunMultiSequenceLearningExperiment(List<Sequence> sequences, List<Sequence> sequencesTest)
@@ -138,8 +138,8 @@ namespace MultiSequenceLearning
             }
             else
             {
-                Console.WriteLine("Nothing predicted");
-                return $"Input: {current}, Nothing predicted";
+                Console.WriteLine("No Prediction");
+                return $"Input: {current}, No Prediction";
             }
         }
 
