@@ -34,7 +34,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="dataset\dataset_01.json">
+		<None Update="dataset\dataset_02.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		

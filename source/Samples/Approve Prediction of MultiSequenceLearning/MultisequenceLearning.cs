@@ -201,8 +201,8 @@ namespace MultiSequenceLearning
 
                     double accuracy = (double)matches / (double)sequenceKeyPair.data.Length * 100.0;
 
-                    Debug.WriteLine($"Cycle: {cycle}\tMatches={matches} of {sequenceKeyPair.data.Length}\t {accuracy}%");
-                    Console.WriteLine($"Cycle: {cycle}\tMatches={matches} of {sequenceKeyPair.data.Length}\t {accuracy}%");
+                    Debug.WriteLine($"Cycle: {cycle}\nMatches={matches} of {sequenceKeyPair.data.Length}\nAccuracy = {accuracy}%");
+                    Console.WriteLine($"Cycle: {cycle}\nMatches={matches} of {sequenceKeyPair.data.Length}\nAccuracy = {accuracy}%");
 
                     if (accuracy >= maxPossibleAccuraccy)
                     {

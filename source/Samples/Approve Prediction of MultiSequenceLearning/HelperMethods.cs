@@ -38,22 +38,24 @@ namespace MultiSequenceLearning
         {
             return new HtmConfig(new int[] { inputBits }, new int[] { numColumns })
             {
-                Random = new ThreadSafeRandom(DefaultRandomSeed),
-                CellsPerColumn = DefaultCellsPerColumn,
+                Random = new ThreadSafeRandom(42),
+
+                CellsPerColumn = 25,
                 GlobalInhibition = true,
                 LocalAreaDensity = -1,
-                NumActiveColumnsPerInhArea = DefaultGlobalInhibitionDensity * numColumns,
-                PotentialRadius = (int)(DefaultPotentialRadiusFactor * inputBits),
-                MaxBoost = DefaultMaxBoost,
-                DutyCyclePeriod = DefaultDutyCyclePeriod,
-                MinPctOverlapDutyCycles = DefaultMinPctOverlapDutyCycles,
-                MaxSynapsesPerSegment = (int)(DefaultMaxSynapsesPerSegmentFactor * numColumns),
-                ActivationThreshold = DefaultActivationThreshold,
-                ConnectedPermanence = DefaultConnectedPermanence,
-                PermanenceDecrement = DefaultPermanenceDecrement,
-                PermanenceIncrement = DefaultPermanenceIncrement,
-                PredictedSegmentDecrement = DefaultPredictedSegmentDecrement
+                NumActiveColumnsPerInhArea = 0.02 * numColumns,
+                PotentialRadius = (int)(0.15 * inputBits),
+                MaxBoost = 10.0,
+                DutyCyclePeriod = 25,
+                MinPctOverlapDutyCycles = 0.75,
+                MaxSynapsesPerSegment = (int)(0.02 * numColumns),
+                ActivationThreshold = 15,
+                ConnectedPermanence = 0.5,
+                PermanenceDecrement = 0.25,
+                PermanenceIncrement = 0.15,
+                PredictedSegmentDecrement = 0.1,
             };
+
         }
 
         /// <summary>

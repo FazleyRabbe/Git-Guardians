@@ -14,8 +14,8 @@ namespace MultiSequenceLearning
         private const string DatasetFolder = "dataset";
         private const string ReportFolder = "report";
         //private const string DatasetFileName = "dataset_01.json";
-        //private const string DatasetFileName = "dataset_02.json";
-        private const string DatasetFileName = "dataset_03.json";
+        private const string DatasetFileName = "dataset_02.json";
+        //private const string DatasetFileName = "dataset_03.json";
         private const string TestsetFileName = "test_01.json";
 
         static void Main(string[] args)
@@ -103,6 +103,7 @@ namespace MultiSequenceLearning
         private static double PredictNextElement(Predictor predictor, int[] list, Report report)
         {
             int matchCount = 0, predictions = 0;
+            double accuracy = 0.0;
             List<string> logs = new List<string>();
 
             predictor.Reset();
@@ -143,9 +144,18 @@ namespace MultiSequenceLearning
             }
         }
 
+        //Summary
+        //Accuracy is calculated as number of matching predictions made 
+        //divided by total number of prediction made for an element in subsequence
+        //accuracy = number of matching predictions/total number of prediction * 100
+        //Summary
         private static double CalculateAccuracy(int matchCount, int predictions)
         {
-            return (double)matchCount / predictions * 100;
+            double accuracy = 0.0;
+            accuracy = (double)matchCount / predictions * 100;
+            Console.WriteLine("**************");
+
+            return accuracy; 
         }
     }
 
