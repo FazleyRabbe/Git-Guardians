@@ -22,7 +22,7 @@ namespace MultiSequenceLearning
     {
         public Predictor Run(List<Sequence> sequences)
         {
-            Console.WriteLine($"Hello NeocortexApi! Experiment by Git Gurdians {nameof(MultiSequenceLearning)}");
+            Console.WriteLine($"Hello NeocortexApi! {nameof(MultiSequenceLearning)}");
             int inputBits = 100;
             int numColumns = 1024;
             HtmConfig cfg = HelperMethods.FetchHTMConfig(inputBits, numColumns);
@@ -41,7 +41,7 @@ namespace MultiSequenceLearning
             CortexLayer<object, object> layer1 = new CortexLayer<object, object>("L1");
             TemporalMemory tm = new TemporalMemory();
 
-            Console.WriteLine("************** START **************");
+            Console.WriteLine("************** START Predicting **************");
 
             HomeostaticPlasticityController hpc = new HomeostaticPlasticityController(mem, numUniqueInputs * 150, (isStable, numPatterns, actColAvg, seenInputs) =>
             {

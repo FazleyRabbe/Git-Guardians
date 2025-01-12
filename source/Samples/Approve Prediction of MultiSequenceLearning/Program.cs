@@ -153,7 +153,7 @@ namespace MultiSequenceLearning
         {
             double accuracy = 0.0;
             accuracy = (double)matchCount / predictions * 100;
-            Console.WriteLine("**************");
+            Console.WriteLine("*******#######*******");
 
             return accuracy; 
         }
